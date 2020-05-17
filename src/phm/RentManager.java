@@ -2,8 +2,10 @@ package phm;
 
 import java.time.LocalDateTime;
 
+import Manager.RentalManager;
 
-public class RentManager extends MemberManager {
+
+public class RentManager extends RentalManager {
 	
 	
 	// 메인에서 1번 눌렀을 떄!

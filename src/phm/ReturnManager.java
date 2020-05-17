@@ -2,7 +2,9 @@ package phm;
 
 import java.time.LocalDateTime;
 
-public class ReturnManager extends MemberManager {
+import Manager.RentalManager;
+
+public class ReturnManager extends RentalManager {
 
 	// 메인에서 4번 눌렀을 떄!
 	// ㅡ> 내 대여내역 자동출력, 반납 연장 선택 ㅡ> 반납. 연장 기능

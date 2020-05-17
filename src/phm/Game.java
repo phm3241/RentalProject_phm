@@ -33,13 +33,13 @@ public class Game extends RentalItemInfo{
 
 
 	@Override
-	void showBasicInfo() {
+	public void showBasicInfo() {
 		super.showBasicInfo();
 		System.out.println("제작사 :"+producer);
 	}
 	
 	@Override
-	void showAllinfo() {
+	public void showAllinfo() {
 		super.showBasicInfo();
 		System.out.println("제한연령 :"+limitAge+"\t\t출판일 :"+launchDate+"\r\n설명 :"+story);
 		System.out.println("대여횟수 :"+rentalCount+"\t\t관심수 :"+like+"\t\t\t\t재고 :"+numOfItem+"\t\t\t반납예정일 :"+returnDate);
@@ -48,7 +48,7 @@ public class Game extends RentalItemInfo{
 
 
 	@Override
-	boolean checkTitle(String title) {
+	public boolean checkTitle(String title) {
 		return super.checkTitle(title);
 	}
 	

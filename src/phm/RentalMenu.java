@@ -1,10 +1,12 @@
 package phm;
 
+import Manager.ItemManager;
+import Manager.RentalManager;
 
 public class RentalMenu {
 	
-	public static AdminManager adm = AdminManager.getInstance();
-	static MemberManager mem = new MemberManager();
+	public static ItemManager adm = ItemManager.getInstance();
+	static RentalManager mem = new RentalManager();
 	
 	
 	//6-1 관리자 페이지-회원관리

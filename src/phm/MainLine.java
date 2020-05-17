@@ -1,11 +1,14 @@
 package phm;
 
+import Manager.ItemManager;
+import Manager.RentalManager;
+
 public class MainLine {
 
 	public static void main(String[] args) {
 
-		AdminManager adm = AdminManager.getInstance();
-		MemberManager mem = new MemberManager();
+		ItemManager adm = ItemManager.getInstance();
+		RentalManager mem = new RentalManager();
 
 		while (true) {
 			System.out.println("메인메뉴");

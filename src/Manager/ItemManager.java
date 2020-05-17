@@ -1,29 +1,45 @@
-package phm;
+package Manager;
 
 
+import phm.Book;
+import phm.DVD;
+import phm.Game;
+import phm.Member;
+import phm.MemberInfo;
+import phm.RentalItemInfo;
 import phm.data.*;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
-public class AdminManager {
+public class ItemManager {
 
-    private ArrayList<Member> member;
-    Scanner sc;
+     Scanner sc;
+     
 
     //아이템배열 선언
-    private ArrayList<Book> books;
-    private ArrayList<DVD> dvd;
-    private ArrayList<Game> game;
-
-
-    private AdminManager() {
-        this.member = new ArrayList<>();
-        this.books = new ArrayList<>();
-        this.dvd = new ArrayList<>();
-        this.game = new ArrayList<>();
+    private List<RentalItemInfo> itemsList;
+    // private List<RentalItemInfo> items= new ArrayList<Book>();
+    // 이렇게 문법은 안되고, 아래처럼 우선 상위타입 리스트 만들고, 하위객체들을 리스트에 추가하는 방식으로 해야함. 
+    
+    private ItemManager() {
+        // 일단 RentalItemInfo 리스트 만들고, 
+    	this.itemsList= new ArrayList<>();
+        
+        // 방법1. 도서배열 추가. 꺼내서 쓸때마다 형변환해서 써야하는 번거로움.. 
+        // itemsList.add(new Book());
+        
+        // 방법2. 도서리스트별도 만들고 RentaItemInfo 리스트에 모두추가
+        // private ArrayList<Book> books;
+        // itemsList.addAll(new ArrayList<Book>());
+        
         sc = new Scanner(System.in);
+        
+        
+        
 
         //book데이터 객체
         Bookdata book1 = new Bookdata();
@@ -32,11 +48,11 @@ public class AdminManager {
         Bookdata4 book4 = new Bookdata4();
         Bookdata5 book5 = new Bookdata5();
 
-        this.books.add(book1);
-        this.books.add(book2);
-        this.books.add(book3);
-        this.books.add(book4);
-        this.books.add(book5);
+        this.itemsList.add(book1);
+        this.itemsList.add(book2);
+        this.itemsList.add(book3);
+        this.itemsList.add(book4);
+        this.itemsList.add(book5);
 
 
         //DVD데이터 객체
@@ -46,11 +62,11 @@ public class AdminManager {
         DVDData4 dvd4 = new DVDData4();
         DVDData5 dvd5 = new DVDData5();
 
-        this.dvd.add(dvd1);
-        this.dvd.add(dvd2);
-        this.dvd.add(dvd3);
-        this.dvd.add(dvd4);
-        this.dvd.add(dvd5);
+        this.itemsList.add(dvd1);
+        this.itemsList.add(dvd2);
+        this.itemsList.add(dvd3);
+        this.itemsList.add(dvd4);
+        this.itemsList.add(dvd5);
 
         //game데이터 객체
         GameData game1 = new GameData();
@@ -59,369 +75,34 @@ public class AdminManager {
         GameData4 game4 = new GameData4();
         GameData5 game5 = new GameData5();
 
-        this.game.add(game1);
-        this.game.add(game2);
-        this.game.add(game3);
-        this.game.add(game4);
-        this.game.add(game5);
+        this.itemsList.add(game1);
+        this.itemsList.add(game2);
+        this.itemsList.add(game3);
+        this.itemsList.add(game4);
+        this.itemsList.add(game5);
 
-        //mamber데이터 객체
-        MemberData mem1 = new MemberData();
-        MemberData2 mem2 = new MemberData2();
-        MemberData3 mem3 = new MemberData3();
-        MemberData4 mem4 = new MemberData4();
-        MemberData5 mem5 = new MemberData5();
-
-        this.member.add(mem1);
-        this.member.add(mem2);
-        this.member.add(mem3);
-        this.member.add(mem4);
-        this.member.add(mem5);
     }
 
-    //어드민매니저 객체 싱글톤 구현
-    private static AdminManager manager = new AdminManager();
+    //아이템매니저 객체 싱글톤 구현
+    private static ItemManager itemManager = new ItemManager();
 
-    public static AdminManager getInstance() {
-        return manager;
+    public static ItemManager getInstance() {
+        return itemManager;
     }
 
-
-    public ArrayList<Member> getMember() {
-        return member;
-    }
-
-
-    public ArrayList<Book> getBooks() {
-        return books;
-    }
-
-
-    public ArrayList<DVD> getDvd() {
-        return dvd;
-    }
-
-
-    public ArrayList<Game> getGame() {
-        return game;
-    }
-
-
-    //회원정보보기
-    //객체 전체 목록 출력
-    public void showInfo() {
-        for (int i = 0; i < member.size(); i++) {
-            member.get(i).showAllInfo();
-            System.out.println("----------------------------");
-        }
-    }
-
-    public void addInfo() {
-        String id = null, pw = null, pw2 = null, name = null, phoneNum = null, addr = null, email = null;
-        int age = 0;
-
-        //비밀번호 확인 루프를 위한 변수
-        boolean checkPw = true;
-
-        System.out.println("회원가입을 시작합니다.");
-        System.out.println("사용하실 아이디를 입력해 주세요.");
-        id = sc.nextLine();
-
-        while (checkPw) {
-            System.out.println("비밀번호를 입력해 주세요.");
-            pw = sc.nextLine();
-            System.out.println("다시한번 입력해 주세요.");
-            pw2 = sc.nextLine();
-            if (pw.equals(pw2)) {
-                System.out.println("이름을 입력해 주세요.");
-                name = sc.nextLine();
-
-                while (true) {
-                   
-                        System.out.println("나이를 입력 해주세요.");
-                        try {
-                        	
-                        age = sc.nextInt();
-                        sc.nextLine();
-
-                    } catch (InputMismatchException e) {
-                        System.out.println("숫자를 입력해 주세요.");
-                        sc.nextLine();
-                        continue;
-                    }
-
-
-                    System.out.println("전화번호를 입력해 주세요.");
-                    phoneNum = sc.nextLine();
-
-                    System.out.println("주소를 입력해 주세요.");
-                    addr = sc.nextLine();
-
-                    System.out.println("이메일을 입력해 주세요.");
-                    email = sc.nextLine();
-
-                    //입력받은 데이터 저장
-                    Member info = new Member(name, age, phoneNum, addr, email, id, pw);
-                    member.add(info);
-
-                    System.out.println("회원가입이 정상적으로 완료되었습니다.");
-                    //저장후 무한루프를 빠져나오기 위해 checkPw를 false로 변경
-                    //System.out.println(member.get(0));
-                    checkPw = false;
-                    break;
-                }
-            } else {
-                System.out.println("입력하신 비밀번호가 다릅니다. 다시 입력해 주세요.");
-                continue;
-            }
-        }
-               
-    }
-
-
-    // 로그인체크해서 로그인상태인지 아닌지 반환
-    boolean loginCheck() {
-
-        boolean loginCheck = false;
-
-        for (int i = 0; i < this.member.size(); i++) {
-            if ((this.member.get(i).loginCheck) == true) {
-                loginCheck = true;
-
-                break;
-            }
-        }
-
-        return loginCheck;
-    }
-
-
-    // 로그인체크해서 인덱스 반환
-    int loginCheckIndex() {
-
-        int loginCheckIndex = -1;
-
-        for (int i = 0; i < this.member.size(); i++) {
-            if (this.member.get(i).loginCheck == true) {
-                loginCheckIndex = i;
-                break;
-            }
-        }
-
-        return loginCheckIndex;
-    }
-
-
-    int searchIndex(String id) {
-
-        //정상적인 index 값은 0~이상의 값, 찾지 못했을 때 구분 값 -1을 사용
-        int searchIndex = -1;
-
-        //배열의 반복으로 id값을 비교해서 index 값을 찾는다.
-        for (int i = 0; i < member.size(); i++) {
-            if (member.get(i).checkId(id)) {
-                searchIndex = i;
-                break;
-            }
-        }
-        return searchIndex;
-    }
-
-    public void editInfo() {
-
-        System.out.println("수정하실 분의 아이디를 선택해 주세요.");
-        String id = sc.nextLine();
-
-        int index = searchIndex(id);
-
-        if(index > 0) {
-            MemberInfo info = null;
-
-            while(true) {
-            System.out.println("1. 비밀번호 | 2. 전화번호 | 3.주소 | 4. 이메일 |5. 뒤로가기");
-
-            int selectNum;
-			try {
-				selectNum = sc.nextInt();
-				sc.nextLine();
-			} catch (Exception e) {
-				System.out.println("1~5사이의 숫자를 입력해주세요");
-				sc.nextLine();
-				continue;
-			}
-            switch (selectNum) {
-                case 1:
-                    boolean check = true;
-                    while (check) {
-                        System.out.println("변경하실 비밀번호를 입력해 주세요.");
-                        String pw1 = sc.nextLine();
-
-                        System.out.println("다시 입력해주세요.");
-                        String pw2 = sc.nextLine();
-
-                        //아이디,비밀번호정보 받고 수정해야함
-                        if (pw1.equals(pw2)) {
-                            member.get(index).setPw(pw1);
-                            System.out.println("비밀번호 변경이 완료되었습니다.");
-                            check = false;
-                            break;
-                        } else {
-                            System.out.println("비밀번호가 맞지 않습니다. 다시 입력해 주세요.");
-                            continue;
-                        }
-                    }
-                    break;
-                case 2:
-                    System.out.println("변경하실 전화번호를 입력해 주세요.");
-                    String phoneNumber = sc.nextLine();
-
-                    member.get(index).phoneNum = phoneNumber;
-                    System.out.println("전화번호 변경이 완료되었습니다.");
-                    break;
-                case 3:
-                    System.out.println("변경하실 주소를 입력해 주세요.");
-                    String addr = sc.nextLine();
-
-                    member.get(index).addr = addr;
-                    System.out.println("주소 변경이 완료되었습니다.");
-                    break;
-                case 4:
-                    System.out.println("변경하실 이메일을 입력해 주세요.");
-                    String email = sc.nextLine();
-
-                    member.get(index).email = email;
-                    System.out.println("이메일 변경이 완료되었습니다.");
-                    break;
-                case 5:
-                	break;
-                	default:				
-                		System.out.println("1~5사이의 숫자를 입력해주세요");
-                		continue;
-            }
-            }
-        } else {
-            System.out.println("찾으시는 아이디가 없습니다.");
-
-        }
-    }
     
-    public void deleteInfo() {
-        System.out.println("삭제하실분의 아이디를 입력해 주세요.");
-        String id = sc.nextLine();
-
-        int index = searchIndex(id);
-        System.out.println("아이디가 삭제되었습니다.");
-        member.remove(index);
-
-    }
-
-
-    //로그인
-    public void login() {
-
-        if (loginCheck() == false) {
-            boolean check = true;
-            while (check) {
-                System.out.println("아이디를 입력해 주세요.");
-                String id = sc.nextLine();
-
-                int index = searchIndex(id);
-                if (index >= 0) {
-                    System.out.println("비밀번호를 입력해 주세요.");
-                    String pw = sc.nextLine();
-                    if (member.get(index).getPw().equals(pw)) {
-                        System.out.println("로그인이 완료되었습니다.");
-                        member.get(index).loginCheck = true;
-                        //System.out.println(member.get(index).loginCheck);
-                        check = false;
-                        break;
-                    } else {
-                        System.out.println("비밀번호를 다시 입력해 주세요.");
-                        continue;
-                    }
-                } else {
-                    System.out.println("입력하신 아이디가 없습니다. 다시 입력해주세요.");
-                    continue;
-                }
-            }
-        } else {
-            System.out.println("이미 로그인 중입니다.");
-        }
-    }
-
-    //관리자 로그인
-    public void AdminLogin() {
-        String loginPw = "0000";
-        boolean loginCheck = true;
-        int failCnt = 0;
-
-        System.out.println("관리자 페이지 입니다.");
-        System.out.println("");
-
-
-        while (loginCheck) {
-            System.out.println("비밀번호를 입력해주세요");
-            String adminPw = sc.nextLine();
-            
-
-            if (loginPw.equals(adminPw)) {
-                System.out.println("관리자로 로그인 하였습니다.");
-                loginCheck = false;
-                break;
-            } else {
-                System.out.println("비밀번호가 틀립니다. 다시 입력해 주세요.");
-                failCnt++;
-
-                if (failCnt == 3) {
-                    System.out.println("너무 많이 틀리셨습니다. 메인 페이지로 돌아갑니다.");
-                    break;
-                }
-                continue;
-
-            }
-        }
-    }
-
-    public void logOut() {
-        if (loginCheck()) {
-            for (int i = 0; i < member.size(); i++) {
-                if (member.get(i).loginCheck == true) {
-                    member.get(i).loginCheck = false;
-                    System.out.println("로그아웃 되었습니다.");
-                    break;
-                }
-            }
-        } else {
-            System.out.println("로그인된 계정이 없습니다.");
-        }
-    }
-
-
-    public void adminLogOut() {
-        for (int i = 0; i < member.size(); i++) {
-            if (member.get(i).loginCheck == true) {
-                member.get(i).loginCheck = false;
-                System.out.println("로그아웃 되었습니다.");
-                break;
-            } else {
-                System.out.println("로그인된 계정이 없습니다.");
-                break;
-            }
-        }
-
-    }
-
+//    itemsList.
     //책입니다---------------------------------------------
-
+   
     //자료관리
     //도서 정보보기
     public void showBookInfo() {
         System.out.println("책 전체정보 출력");
-        for (int i = 0; i < books.size(); i++) {
-            books.get(i).showAllinfo();
+        for (int i = 0; i < itemsList.size(); i++) {
+        	itemsList.get(i).showAllinfo();
             System.out.println("-------------");
         }
-
+        
 
     }
 

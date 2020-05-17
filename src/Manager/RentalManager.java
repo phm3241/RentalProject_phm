@@ -1,4 +1,4 @@
-package phm;
+package Manager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,18 +19,21 @@ import java.util.ArrayList;
 //import data.UserList8;
 //import data.UserList9;
 
-public class MemberManager {
+import phm.Member;
+import phm.RentalList;
+
+public class RentalManager {
 
 	String title = null; // 자료명
-//	String rentalDate=null; 	// 대여일#
-//	String returnDate=null;		// 반납일#
+
 	public ArrayList<RentalList> rentalList;
 
 	// 회원리스트, 자료리스트 불러오기
-	AdminManager adm = AdminManager.getInstance();
+	MemberManager member = MemberManager.getInstance();
+	ItemManager item = ItemManager.getInstance();
 
 	// 기본생성자, 대여리스트 생성
-	public MemberManager() {
+	public RentalManager() {
 		rentalList = new ArrayList<>();
 
 		// 대여리스트 항목 추가
@@ -76,40 +79,41 @@ public class MemberManager {
 
 		System.out.println("1.도서 | 2.DVD | 3. 게임");
 
-		int selectNum = adm.sc.nextInt();
-		adm.sc.nextLine();
+		int selectNum = item.sc.nextInt();
+		item.sc.nextLine();
 
 		switch (selectNum) {
 		case 1: // Book 선택시
 			System.out.println("------------------------");
-			adm.showBookBasic();
+			item.showBookBasic();
 			System.out.println("------------------------");
 
 			System.out.println("찾으시는 도서명을 입력해주세요.");
-			this.title = adm.sc.nextLine();
+			this.title = item.sc.nextLine();
 
-			int index = adm.searchBookInfo(title);
+			int index = item.searchBookInfo(title);
 
 			if (index < 0) {
 				System.out.println("검색하신 자료의 정보가 없습니다.");
 				break;
 			} else {
-				adm.getBooks().get(index).showAllinfo();
+				item.books.getClass().
+				item.getBooks().get(index).showAllinfo();
 				System.out.println("1.대여 | 2.예약");
-				selectNum = adm.sc.nextInt();
-				adm.sc.nextLine();
+				selectNum = item.sc.nextInt();
+				item.sc.nextLine();
 
 				switch (selectNum) {
 
 				case 1: // 대여
 						// 로그인 상태일시 대여메서드 실행
-					if (adm.loginCheck()) {
+					if (Member.loginCheck()) {
 						creatRentalList();
 						break;
 					} else {
 						// 비로그인 시
 						System.out.println("이용하시려면 로그인을 해 주세요.");
-						adm.login();
+						Member.login();
 						creatRentalList();
 						break;
 					}
@@ -124,34 +128,34 @@ public class MemberManager {
 
 		case 2: // DVD 선택시
 			System.out.println("------------------------");
-			adm.showDvdInfo();
+			item.showDvdInfo();
 			System.out.println("------------------------");
 
 			System.out.println("찾으시는 DVD명을 입력해주세요.");
-			this.title = adm.sc.nextLine();
+			this.title = item.sc.nextLine();
 
-			index = adm.searchDvdInfo(title);
+			index = item.searchDvdInfo(title);
 
 			if (index < 0) {
 				System.out.println("검색하신 자료의 정보가 없습니다.");
 				break;
 			} else {
 				System.out.println("1.대여 | 2.예약");
-				adm.getDvd().get(index).showAllinfo();
-				selectNum = adm.sc.nextInt();
-				adm.sc.nextLine();
+				item.getDvd().get(index).showAllinfo();
+				selectNum = item.sc.nextInt();
+				item.sc.nextLine();
 
 				switch (selectNum) {
 
 				case 1: // 대여
 						// 로그인 상태일시 대여메서드 실행
-					if (adm.loginCheck()) {
+					if (Member.loginCheck()) {
 						creatRentalList();
 						break;
 					} else {
 						// 비로그인 시
 						System.out.println("이용하시려면 로그인을 해 주세요.");
-						adm.login();
+						Member.login();
 						creatRentalList();
 						break;
 					}
@@ -166,34 +170,34 @@ public class MemberManager {
 
 		case 3: // Game 선택시
 			System.out.println("------------------------");
-			adm.showGameInfo();
+			item.showGameInfo();
 			System.out.println("------------------------");
 
 			System.out.println("찾으시는 Game명을 입력해주세요.");
-			this.title = adm.sc.nextLine();
+			this.title = item.sc.nextLine();
 
-			index = adm.searchGameInfo(title);
+			index = item.searchGameInfo(title);
 
 			if (index < 0) {
 				System.out.println("검색하신 자료의 정보가 없습니다.");
 				break;
 			} else {
 				System.out.println("1.대여 | 2.예약");
-				adm.getGame().get(index).showAllinfo();
-				selectNum = adm.sc.nextInt();
-				adm.sc.nextLine();
+				item.getGame().get(index).showAllinfo();
+				selectNum = item.sc.nextInt();
+				item.sc.nextLine();
 
 				switch (selectNum) {
 
 				case 1: // 대여
 						// 로그인 상태일시 대여메서드 실행
-					if (adm.loginCheck()) {
+					if (Member.loginCheck()) {
 						creatRentalList();
 						break;
 					} else {
 						// 비로그인 시
 						System.out.println("이용하시려면 로그인을 해 주세요.");
-						adm.login();
+						Member.login();
 						creatRentalList();
 						break;
 					}
@@ -217,46 +221,46 @@ public class MemberManager {
 		int index = 0;
 		
 		// 입력받은 title이 Book일때!
-		if (adm.searchBookInfo(this.title) >= 0) {
+		if (item.searchBookInfo(this.title) >= 0) {
 		
 			// 재고가 있으면, 재고수 -1, 대여횟수 +1
-			if(adm.getBooks().get(index).numOfItem > 0) {
-				index = adm.searchBookInfo(this.title);
-				adm.getBooks().get(index).numOfItem -= 1;
-				adm.getBooks().get(index).rentalCount += 1;
+			if(item.getBooks().get(index).numOfItem > 0) {
+				index = item.searchBookInfo(this.title);
+				item.getBooks().get(index).numOfItem -= 1;
+				item.getBooks().get(index).rentalCount += 1;
 			
 			// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
-			}else if(adm.searchBookInfo(this.title)==0) {
+			}else if(item.searchBookInfo(this.title)==0) {
 				System.out.println("선택하신 자료가 현재 모두 대여중입니다. 대여예약을 진행해주세요.");
 				showInfo();
 			}
 				
 		// 입력받은 title이 Dvd일때!	
-		}else if (adm.searchDvdInfo(this.title) >= 0) {
+		}else if (item.searchDvdInfo(this.title) >= 0) {
 			
 			// 재고가 있으면, 재고수 -1, 대여횟수 +1
-			if(adm.getDvd().get(index).numOfItem > 0) {
-				index = adm.searchDvdInfo(this.title);
-				adm.getDvd().get(index).numOfItem -= 1;
-				adm.getDvd().get(index).rentalCount += 1;
+			if(item.getDvd().get(index).numOfItem > 0) {
+				index = item.searchDvdInfo(this.title);
+				item.getDvd().get(index).numOfItem -= 1;
+				item.getDvd().get(index).rentalCount += 1;
 			
 			// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
-			}else if(adm.searchDvdInfo(this.title)==0) {
+			}else if(item.searchDvdInfo(this.title)==0) {
 				System.out.println("선택하신 자료가 현재 모두 대여중입니다. 대여예약을 진행해주세요.");
 				showInfo();
 			}	
 				
 		// 입력받은 title이 Game일때!	
-		} else if (adm.searchGameInfo(this.title) >= 0) {
+		} else if (item.searchGameInfo(this.title) >= 0) {
 			
 			// 재고가 있으면, 재고수 -1, 대여횟수 +1
-			if(adm.getGame().get(index).numOfItem > 0) {
-				index = adm.searchGameInfo(this.title);
-				adm.getGame().get(index).numOfItem -= 1;
-				adm.getGame().get(index).rentalCount += 1;
+			if(item.getGame().get(index).numOfItem > 0) {
+				index = item.searchGameInfo(this.title);
+				item.getGame().get(index).numOfItem -= 1;
+				item.getGame().get(index).rentalCount += 1;
 			
 			// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
-			}else if(adm.searchDvdInfo(this.title)==0) {
+			}else if(item.searchDvdInfo(this.title)==0) {
 				System.out.println("선택하신 자료가 현재 모두 대여중입니다. 대여예약을 진행해주세요.");
 				showInfo();
 				
@@ -269,11 +273,11 @@ public class MemberManager {
 	Member getloginIdInfo() {
 
 		// 로그인한 회원 Id의 인덱스 찾고,
-		int index = adm.loginCheckIndex();
+		int index = member.loginCheckIndex();
 
 		// 그 회원의 정보 반환
 		Member loginIdInfo = null;
-		loginIdInfo = adm.getMember().get(index);
+		loginIdInfo = member.getMember().get(index);
 
 		return loginIdInfo;
 	}

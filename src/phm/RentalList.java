@@ -2,6 +2,8 @@ package phm;
 
 import java.time.LocalDateTime;
 
+import Manager.ItemManager;
+
 public class RentalList {
 	
 	String id;      		// 회원ID
@@ -15,7 +17,7 @@ public class RentalList {
 	String extendDate;		// 연장된 반납일#
 	String overdue;			// 연체일
 	
-	AdminManager admManager=AdminManager.getInstance();
+	ItemManager admManager=ItemManager.getInstance();
 	
 	RentalList(String id, String title, String start, String end){
 		

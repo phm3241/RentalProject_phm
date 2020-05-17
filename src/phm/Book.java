@@ -31,7 +31,7 @@ public class Book extends RentalItemInfo{
 	
 	
 	@Override
-	void showBasicInfo() {
+	public void showBasicInfo() {
 		super.showBasicInfo();
 		System.out.println("저자 :"+author);
 		
@@ -39,7 +39,7 @@ public class Book extends RentalItemInfo{
 	
 	
 	@Override
-	void showAllinfo() {
+	public void showAllinfo() {
 		super.showBasicInfo();
 		System.out.println("제한연령 :"+limitAge+"\t\t출판일 :"+launchDate+"\t\t인기자료 :"+bestTitle+"\r\n설명 :"+story);
 		System.out.println("대여횟수 :"+rentalCount+"\t\t관심수 :"+like+"\t\t\t\t재고 :"+numOfItem+"\t\t\t반납예정일 :"+returnDate);
@@ -49,7 +49,7 @@ public class Book extends RentalItemInfo{
 
 
 	@Override
-	boolean checkTitle(String title) {
+	public boolean checkTitle(String title) {
 		return super.checkTitle(title);
 	}
 	

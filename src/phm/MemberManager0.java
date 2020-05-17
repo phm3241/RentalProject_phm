@@ -2,6 +2,8 @@ package phm;
 
 import java.util.ArrayList;
 
+import Manager.ItemManager;
+
 public class MemberManager0 {
 
 	String title = null; // 자료명
@@ -10,7 +12,7 @@ public class MemberManager0 {
 	public ArrayList<RentalList> rentalList;
 
 	// 회원리스트, 자료리스트 불러오기
-	public AdminManager adm = AdminManager.getInstance();
+	public ItemManager adm = ItemManager.getInstance();
 
 	// 기본생성자, 대여리스트 생성
 	public MemberManager0() {
