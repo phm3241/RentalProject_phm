@@ -557,6 +557,48 @@ public class AdminManager {
         }
     }
 
+    //FIXME 환영 피드백
+    public void showBasic(int selectNum) {
+    	if(selectNum == 1) {
+    		showBookBasic();
+    	}else if(selectNum == 2) {
+    		showDvdBasic();
+    	}else {
+    		showGameBasic();
+    	}
+    }
+
+    //FIXME 환영 피드백
+    public int searchInfo(int selectNum, String title) {
+    	if(selectNum == 1) {
+    		return searchBookInfo(title);
+    	}else if(selectNum == 2) {
+    		return searchDvdInfo(title);
+    	}else {
+    		return searchGameInfo(title);
+    	}
+    }
+
+    //FIXME 환영 피드백
+    public RentalItemInfo getData(int selectNum, int index) {
+    	
+    	if(selectNum == 1) {
+    		Book book = getBooks().get(index);
+    		book.showAllinfo();
+    		return book;
+    		
+    	}else if(selectNum == 2) {
+    		DVD dvd = getDvd().get(index);
+    		dvd.showAllinfo();
+    		return dvd;
+    		
+    	}else {
+    		Game game = getGame().get(index);
+    		game.showAllinfo();
+    		return game;
+    	}
+    }
+    
     //create로 이동
 //	@Override
     //도서 정보넣기

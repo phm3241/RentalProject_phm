@@ -73,11 +73,14 @@ public class MemberManager {
 	// 메인메뉴 1 : 검색/ 대여
 	// ㅡ> 도서/DVD/게임 선택 ㅡ> 선택된 자료전체의 기본정보 자동출력 ㅡ> 자료명 선택 ㅡ> 선택한 자료명 상세정보출력 ㅡ> 대여/
 	// 예약기능
-	void searchItemInfo() {
+	
+	boolean searchItemInfo() {
 		int selectNum;
+		
+		while(true) {
 
-		while (true) {
-
+			//////////// 1. 자료구분 선택
+			
 			System.out.println("1.도서 | 2.DVD | 3. 게임");
 			System.out.println("검색하고자 하는 자료의 번호를 입력해주세요.");
 
@@ -91,207 +94,131 @@ public class MemberManager {
 				adm.sc.nextLine();
 				continue;
 			}
+		
+			//선택한 자료에 대한 기본 정보 출력
+			adm.showBasic(selectNum);
+
+			
+			//////////// 2. 선택
+			
+			System.out.println();
+			System.out.println("찾으시는 자료명을 입력해주세요.");
+			
+			String title = adm.sc.nextLine();
+			
+			int index = adm.searchInfo(selectNum, title);
+			if (index < 0) {
+				System.out.println("검색하신 자료의 정보가 없습니다.");
+				continue;
+			} else {
+
+				//해당하는 자료 변수 받기
+				RentalItemInfo item = adm.getData(selectNum, index);
+				
+				//////////// 3. 원하는 작업 시작
+				doAction(item);
+			}
+		}
+	}
+	
+	void doAction(RentalItemInfo item) {
+		int selectNum;
+
+		while (true) {
+			System.out.println("1.대여 | 2.예약  | 3.뒤로가기  | 4.메인화면 ");
+
+			try {
+				selectNum = adm.sc.nextInt();
+				adm.sc.nextLine();
+			} catch (Exception e) {
+				System.out.println("잘못된 메뉴입력입니다. \n 확인하시고 다시 입력해주세요");
+				adm.sc.nextLine();
+				continue;
+			}
 
 			switch (selectNum) {
-			case 1: // Book 선택시
-				System.out.println(
-						"===================================================================================================");
-				adm.showBookBasic();
-				System.out.println();
 
-				System.out.println("찾으시는 도서명을 입력해주세요.");
-				this.title = adm.sc.nextLine();
-
-				int index = adm.searchBookInfo(title);
-
-				if (index < 0) {
-					System.out.println("검색하신 자료의 정보가 없습니다.");
-					continue;
-				} else {
-					System.out.println(
-							"===================================================================================================");
-
-					adm.getBooks().get(index).showAllinfo();
-
-					while (true) {
-						System.out.println("1.대여 | 2.예약  | 3.뒤로가기  | 4.메인화면 ");
-
-						try {
-							selectNum = adm.sc.nextInt();
-							adm.sc.nextLine();
-						} catch (Exception e) {
-							System.out.println("잘못된 메뉴입력입니다. \n 확인하시고 다시 입력해주세요");
-							adm.sc.nextLine();
-							continue;
-						}
-
-						switch (selectNum) {
-
-						case 1: // 대여
-								// 로그인 상태일시 대여메서드 실행
-							if (adm.loginCheck()) {
-								creatRentalList();
-								break;
-							} else {
-								// 비로그인 시
-								System.out.println();
-								System.out.println("이용하시려면 로그인을 해 주세요.");
-								adm.login();
-								creatRentalList();
-								break;
-							}
-
-						case 2: // 예약
-							/* 예약 메서드 */
-							break;
-
-						case 3: // 뒤로가기
-							searchItemInfo();
-							break;
-
-						case 4: // 메인화면
-							return;
-
-						default:
-							System.out.println("메뉴의 숫자를 입력해주세요.");
-							continue;
-						} // switch : case1(Book) : switch end
-
-						break;
-					} // while end
+			case 1: // 대여
+					// 로그인 상태일시 대여메서드 실행
+				if (adm.loginCheck()) {
+					creatRentalList(item);
 					break;
-
-				} // switch : case1(Book) : else end
-
-			case 2: // DVD 선택시
-				System.out.println(
-						"===================================================================================================");
-				adm.showDvdBasic();
-
-				System.out.println("찾으시는 DVD명을 입력해주세요.");
-				this.title = adm.sc.nextLine();
-
-				index = adm.searchDvdInfo(title);
-
-				if (index < 0) {
-					System.out.println("검색하신 자료의 정보가 없습니다.");
-					continue;
 				} else {
-
-					System.out.println(
-							"===================================================================================================");
-					adm.getDvd().get(index).showAllinfo();
-
-					while (true) {
-						System.out.println("1.대여 | 2.예약  | 3.뒤로가기  | 4.메인화면 ");
-						selectNum = adm.sc.nextInt();
-						adm.sc.nextLine();
-
-						switch (selectNum) {
-
-						case 1: // 대여
-								// 로그인 상태일시 대여메서드 실행
-							if (adm.loginCheck()) {
-								creatRentalList();
-								break;
-							} else {
-								// 비로그인 시
-								System.out.println("이용하시려면 로그인을 해 주세요.");
-								adm.login();
-								creatRentalList();
-								break;
-							}
-
-						case 2: // 예약
-							/* 예약 메서드 */
-							break;
-
-						case 3: // 뒤로가기
-							searchItemInfo();
-							break;
-
-						case 4: // 메인화면
-							return;
-
-						default:
-							System.out.println("메뉴의 숫자를 입력해주세요.");
-							continue;
-						} // switch : case1(Book) : switch end
-
-						break;
-					} // while end
+					// 비로그인 시
+					System.out.println();
+					System.out.println("이용하시려면 로그인을 해 주세요.");
+					adm.login();
+					creatRentalList(item);
 					break;
+				}
 
-				} // switch : case1(Book) : else end
+			case 2: // 예약
+				/* 예약 메서드 */
+				break;
 
-			case 3: // Game 선택시
-				System.out.println(
-						"===================================================================================================");
-				adm.showGameBasic();
+			case 3: // 뒤로가기
+				searchItemInfo();
+				break;
 
-				System.out.println("찾으시는 Game명을 입력해주세요.");
-				this.title = adm.sc.nextLine();
+			case 4: // 메인화면
+				return;
 
-				index = adm.searchGameInfo(title);
-
-				if (index < 0) {
-					System.out.println("검색하신 자료의 정보가 없습니다.");
-					continue;
-				} else {
-					System.out.println(
-							"===================================================================================================");
-					adm.getGame().get(index).showAllinfo();
-
-					while (true) {
-						System.out.println("1.대여 | 2.예약  | 3.뒤로가기  | 4.메인화면");
-						selectNum = adm.sc.nextInt();
-						adm.sc.nextLine();
-
-						switch (selectNum) {
-
-						case 1: // 대여
-								// 로그인 상태일시 대여메서드 실행
-							if (adm.loginCheck()) {
-								creatRentalList();
-								break;
-							} else {
-								// 비로그인 시
-								System.out.println("이용하시려면 로그인을 해 주세요.");
-								adm.login();
-								creatRentalList();
-								break;
-							}
-
-						case 2: // 예약
-							/* 예약 메서드 */
-							break;
-
-						case 3: // 뒤로가기
-							searchItemInfo();
-							break;
-
-						case 4: // 메인화면
-							return;
-						default:
-							System.out.println("메뉴의 숫자를 입력해주세요.");
-							continue;
-						} // switch : case1(Book) : switch end
-
-						break;
-					} // while end
-					break;
-
-				} // switch : case1(Book) : else end
 			default:
 				System.out.println("메뉴의 숫자를 입력해주세요.");
 				continue;
+			} // switch : case1(Book) : switch end
 
-			} // switch end
 			break;
 		} // while end
+		
+	}
+	
+	void creatRentalList(RentalItemInfo item) {
 
-	} // showInfo() end
+		// rentalList 객체 생성
+		RentalList info = null;
 
+		// login한 id의 회원정보와 id 가져오기
+		Member loginIdInfo = getloginIdInfo();
+		String id = loginIdInfo.getId();
+
+		// 1. 대여불가여부 확인 : 만약에 회원의 자료 대여개수가 5개일 때
+		if (loginIdInfo.numOfRent == 5) {
+			System.out.println("자료 대여가능개수(5개)를 모두 사용중입니다. 자료를 반납하신 후 대여를 이용해 주세요.");
+
+		// 2. 대여가능일때
+		} else {
+
+			// 자료 카운트 변경
+			itemRentalCount(item);
+
+			// 회원 카운트 변경 : 로그인한 아이디로 회원정보 받아서 카운트 변경
+			loginIdInfo.numOfRent += 1; // 회원정보 : 대여자료수 +1
+			loginIdInfo.rentalAvail -= 1; // 회원정보 : 대여가능 자료수 +1
+
+			// 대여일 생성
+			LocalDate rentalDate = LocalDate.now();
+			String start = rentalDate.toString();
+
+			// 반납일 생성 : 대여일+7일
+			LocalDate returnDate = rentalDate.plusDays(7);
+			String end = returnDate.toString();
+
+			// MemberManager 객체 생성
+			info = new RentalList(id, item.title, start, end);
+
+			// MemberManager 객체 ㅡ> 대여리스트에 추가 메서드 1-1. 호출.
+			addRental(info);
+			System.out.println(id + "님  < " + title + " > 자료가 대여완료 되었습니다. ");
+			System.out.println("대여일 : " + start + " | 반납예정일 : " + end);
+			return;
+
+		} // else end
+
+	} // creatRentalList() end
+	
+	
+	
 //	■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	// 로그인한 id의 정보를 반환하는 메서드
 	Member getloginIdInfo() {
@@ -312,106 +239,21 @@ public class MemberManager {
 		rentalList.add(info);
 
 	}
-
-// ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
-	// rentalList 인스턴스 생성
-	void creatRentalList() {
-
-		// rentalList 객체 생성
-		RentalList info = null;
-
-		// login한 id의 회원정보와 id 가져오기
-		Member loginIdInfo = getloginIdInfo();
-		String id = loginIdInfo.getId();
-
-		// 1. 대여불가여부 확인 : 만약에 회원의 자료 대여개수가 5개일 때
-		if (loginIdInfo.numOfRent == 5) {
-			System.out.println("자료 대여가능개수(5개)를 모두 사용중입니다. 자료를 반납하신 후 대여를 이용해 주세요.");
-
-			// 2. 대여가능일때
-		} else {
-
-			// 자료 카운트 변경
-			itemRentalCount();
-
-			// 회원 카운트 변경 : 로그인한 아이디로 회원정보 받아서 카운트 변경
-			loginIdInfo.numOfRent += 1; // 회원정보 : 대여자료수 +1
-			loginIdInfo.rentalAvail -= 1; // 회원정보 : 대여가능 자료수 +1
-
-			// 대여일 생성
-			LocalDate rentalDate = LocalDate.now();
-			String start = rentalDate.toString();
-
-			// 반납일 생성 : 대여일+7일
-			LocalDate returnDate = rentalDate.plusDays(7);
-			String end = returnDate.toString();
-
-			// MemberManager 객체 생성
-			info = new RentalList(id, title, start, end);
-
-			// MemberManager 객체 ㅡ> 대여리스트에 추가 메서드 1-1. 호출.
-			addRental(info);
-			System.out.println(id + "님  < " + title + " > 자료가 대여완료 되었습니다. ");
-			System.out.println("대여일 : " + start + " | 반납예정일 : " + end);
-			return;
-
-		} // else end
-
-	} // creatRentalList() end
-
+	
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	// 선택한 자료의 타입을 확인하고 카운트변경 (대여횟수, 재고수, 재고수확인후 대여불가처리)
-	void itemRentalCount() {
+	void itemRentalCount(RentalItemInfo item) {
 
-		int index = 0;
-
-		// 입력받은 title이 Book일때!
-		if (adm.searchBookInfo(this.title) >= 0) {
-
-			// 재고가 있으면, 재고수 -1, 대여횟수 +1
-			if (adm.getBooks().get(index).numOfItem > 0) {
-				index = adm.searchBookInfo(this.title);
-				adm.getBooks().get(index).numOfItem -= 1;
-				adm.getBooks().get(index).rentalCount += 1;
-
-				// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
-			} else if (adm.getBooks().get(index).numOfItem == 0) {
-				System.out.println("선택하신 자료가 현재 모두 대여중입니다.");
-				System.out.println("(...대여예약 기능을 준비중입니다...)");
-				searchItemInfo();
-			}
-
-			// 입력받은 title이 Dvd일때!
-		} else if (adm.searchDvdInfo(this.title) >= 0) {
-
-			// 재고가 있으면, 재고수 -1, 대여횟수 +1
-			if (adm.getDvd().get(index).numOfItem > 0) {
-				index = adm.searchDvdInfo(this.title);
-				adm.getDvd().get(index).numOfItem -= 1;
-				adm.getDvd().get(index).rentalCount += 1;
-
-				// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
-			} else if (adm.getDvd().get(index).numOfItem == 0) {
-				System.out.println("선택하신 자료가 현재 모두 대여중입니다.");
-				System.out.println("(...대여예약 기능을 준비중입니다...)");
-				searchItemInfo();
-			}
-
-			// 입력받은 title이 Game일때!
-		} else if (adm.searchGameInfo(this.title) >= 0) {
-
-			// 재고가 있으면, 재고수 -1, 대여횟수 +1
-			if (adm.getGame().get(index).numOfItem > 0) {
-				index = adm.searchGameInfo(this.title);
-				adm.getGame().get(index).numOfItem -= 1;
-				adm.getGame().get(index).rentalCount += 1;
-
-				// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
-			} else if (adm.getGame().get(index).numOfItem == 0) {
-				System.out.println("선택하신 자료가 현재 모두 대여중입니다.");
-				System.out.println("(...대여예약 기능을 준비중입니다...)");
-				searchItemInfo();
-			}
+		// 재고가 있으면, 재고수 -1, 대여횟수 +1
+		if (item.numOfItem > 0) {
+			item.plus();
+			
+			
+		// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
+		} else if (item.numOfItem == 0) {
+			System.out.println("선택하신 자료가 현재 모두 대여중입니다.");
+			System.out.println("(...대여예약 기능을 준비중입니다...)");
+			searchItemInfo();
 		}
 	}
 

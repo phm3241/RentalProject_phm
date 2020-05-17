@@ -38,6 +38,15 @@ public class RentalItemInfo {
 	boolean checkTitle(String title) {
 		return this.title.equals(title);
 	}
+
 	
+	public void plus() {
+		numOfItem -= 1;
+		rentalCount += 1;
+	}
+	
+	public void minus() {
+		
+	}
 
 }
