@@ -2,7 +2,7 @@ package phm.test;
 
 public class Member extends MemberInfo{
 
-	public boolean loginCheck;		//로그인
+	
 	private String id;				//회원 아이디
 	private String pw;				//회원 비밀번호
 	public int level;				//대여 등급 1 -> 2 -> 3
@@ -10,10 +10,6 @@ public class Member extends MemberInfo{
 	public int rentalAvail;			//대여가능횟수 5
 	public int numOfExtens;			//연장가능횟수 1
 	public int overdue;				//연체 0
-	public int rentalDate;			//대여일 7
-	public String returnDate;		//반납예정일 
-	public String rentInfo;			//대여상태 
-	public int extenDate;		//연장된 반납일 = 반납예정일 +7
 	
 	
 	
@@ -25,11 +21,9 @@ public class Member extends MemberInfo{
 		this.pw = pw;
 		this.level = 1;
 		this.numOfRent = 0;
-		this.rentalAvail = 5;
+		this.rentalAvail = 5-numOfRent;
 		this.numOfExtens = 1;
 		this.overdue = 0;
-		this.rentalDate = 7;
-		this.extenDate = 7;
 	
 	}
 	public Member() {

@@ -3,7 +3,7 @@ package phm.test;
 
 public class RentalMenu {
 	
-	public static AdminManager adm = AdminManager.getInstance();
+	public static RentalItemManager adm = RentalItemManager.getInstance();
 	static MemberManager mem = new MemberManager();
 	
 	

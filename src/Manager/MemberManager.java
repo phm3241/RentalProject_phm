@@ -3,11 +3,16 @@ package Manager;
 
 import phm.Member;
 import phm.MemberInfo;
-import phm.data.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import data.MemberData;
+import data.MemberData2;
+import data.MemberData3;
+import data.MemberData4;
+import data.MemberData5;
 
 public class MemberManager{
 

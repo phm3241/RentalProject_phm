@@ -23,10 +23,10 @@ import data.UserList9;
 public class MemberManager {
 
 	String title = null; // 자료명
-	private ArrayList<RentalLis> rentalList;
+	private ArrayList<RentalList> rentalList;
 
 	// 회원리스트, 자료리스트 불러오기
-	AdminManager adm = AdminManager.getInstance();
+	RentalItemManager adm = RentalItemManager.getInstance();
 
 	// 기본생성자, 대여리스트 생성
 	public MemberManager() {
@@ -50,22 +50,22 @@ public class MemberManager {
 		UserList15 uList15 = new UserList15();
 		UserList16 uList16 = new UserList16();
 
-		this.rentalList.add(uList);
-		this.rentalList.add(uList2);
-		this.rentalList.add(uList3);
-		this.rentalList.add(uList4);
-		this.rentalList.add(uList5);
-		this.rentalList.add(uList6);
-		this.rentalList.add(uList7);
-		this.rentalList.add(uList8);
-		this.rentalList.add(uList9);
-		this.rentalList.add(uList10);
-		this.rentalList.add(uList11);
-		this.rentalList.add(uList12);
-		this.rentalList.add(uList13);
-		this.rentalList.add(uList14);
-		this.rentalList.add(uList15);
-		this.rentalList.add(uList16);
+//		this.rentalList.add(uList);
+//		this.rentalList.add(uList2);
+//		this.rentalList.add(uList3);
+//		this.rentalList.add(uList4);
+//		this.rentalList.add(uList5);
+//		this.rentalList.add(uList6);
+//		this.rentalList.add(uList7);
+//		this.rentalList.add(uList8);
+//		this.rentalList.add(uList9);
+//		this.rentalList.add(uList10);
+//		this.rentalList.add(uList11);
+//		this.rentalList.add(uList12);
+//		this.rentalList.add(uList13);
+//		this.rentalList.add(uList14);
+//		this.rentalList.add(uList15);
+//		this.rentalList.add(uList16);
 
 	}
 
@@ -73,14 +73,14 @@ public class MemberManager {
 	// 메인메뉴 1 : 검색/ 대여
 	// ㅡ> 도서/DVD/게임 선택 ㅡ> 선택된 자료전체의 기본정보 자동출력 ㅡ> 자료명 선택 ㅡ> 선택한 자료명 상세정보출력 ㅡ> 대여/
 	// 예약기능
-	
+
 	void searchItemInfo() {
 		int selectNum;
-		
-		while(true) {
+
+		while (true) {
 
 			//////////// 1. 자료구분 선택
-			
+
 			System.out.println("1.도서 | 2.DVD | 3. 게임");
 			System.out.println("검색하고자 하는 자료의 번호를 입력해주세요.");
 
@@ -94,34 +94,33 @@ public class MemberManager {
 				adm.sc.nextLine();
 				continue;
 			}
-		
-			//선택한 자료에 대한 기본 정보 출력
+
+			// 선택한 자료에 대한 기본 정보 출력
 			adm.showBasic(selectNum);
 
-			
 			//////////// 2. 선택
-			
+
 			System.out.println();
 			System.out.println("찾으시는 자료명을 입력해주세요.");
-			
+
 			String title = adm.sc.nextLine();
-			
+
 			int index = adm.searchInfo(selectNum, title);
 			if (index < 0) {
 				System.out.println("검색하신 자료의 정보가 없습니다.");
 				continue;
 			} else {
 
-				//해당하는 자료 변수 받기
+				// 해당하는 자료 변수 받기
 				RentalItemInfo item = adm.getData(selectNum, index);
-				
+
 				//////////// 3. 원하는 작업 시작
 				doAction(item);
 			}
-			
+
 		}
 	}
-	
+
 	void doAction(RentalItemInfo item) {
 		int selectNum;
 
@@ -171,9 +170,10 @@ public class MemberManager {
 
 			break;
 		} // while end
-		
+
 	}
-	
+
+//	■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	void creatRentalList(RentalItemInfo item) {
 
 		// rentalList 객체 생성
@@ -217,9 +217,7 @@ public class MemberManager {
 		} // else end
 
 	} // creatRentalList() end
-	
-	
-	
+
 //	■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■
 	// 로그인한 id의 정보를 반환하는 메서드
 	Member getloginIdInfo() {
@@ -240,7 +238,7 @@ public class MemberManager {
 		rentalList.add(info);
 
 	}
-	
+
 // ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 	// 선택한 자료의 타입을 확인하고 카운트변경 (대여횟수, 재고수, 재고수확인후 대여불가처리)
 	void itemRentalCount(RentalItemInfo item) {
@@ -248,9 +246,8 @@ public class MemberManager {
 		// 재고가 있으면, 재고수 -1, 대여횟수 +1
 		if (item.numOfItem > 0) {
 			item.plus();
-			
-			
-		// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
+
+			// 대여불가여부 확인 : 자료의 재고가 0일때 ㅡ> 자료 예약안내
 		} else if (item.numOfItem == 0) {
 			System.out.println("선택하신 자료가 현재 모두 대여중입니다.");
 			System.out.println("(...대여예약 기능을 준비중입니다...)");
@@ -393,7 +390,7 @@ public class MemberManager {
 
 				case 3: // 메인화면
 					break;
-					
+
 				default:
 					System.out.println("메뉴의 숫자를 입력해주세요.");
 					continue;
@@ -408,10 +405,10 @@ public class MemberManager {
 	// 반납
 	void itemReturn(int index) {
 
-		// 만약에 대여내역에 같은 자료명이 한개 이상일 때, 
-		// 
-		// 반납일이 null이고, 
-		
+		// 만약에 대여내역에 같은 자료명이 한개 이상일 때,
+		//
+		// 반납일이 null이고,
+
 		// 반납일 = 현재날짜로 생성
 		LocalDate today = LocalDate.now();
 		String returnDate = today.toString();

@@ -4,7 +4,7 @@ public class MainLine {
 
 	public static void main(String[] args) {
 
-		AdminManager adm = AdminManager.getInstance();
+		RentalItemManager adm = RentalItemManager.getInstance();
 		MemberManager mem = new MemberManager();
 
 		while (true) {

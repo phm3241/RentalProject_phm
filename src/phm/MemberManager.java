@@ -26,7 +26,7 @@ public class MemberManager {
 	private ArrayList<RentalList> rentalList;
 
 	// 회원리스트, 자료리스트 불러오기
-	AdminManager adm = AdminManager.getInstance();
+	RentalItemManager adm = RentalItemManager.getInstance();
 
 	// 기본생성자, 대여리스트 생성
 	public MemberManager() {
